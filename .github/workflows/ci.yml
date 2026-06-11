@@ -33,7 +33,7 @@ jobs:
           pip install pandas numpy scikit-learn "mlflow==2.19.0" matplotlib
 
       - name: Run MLflow project
-        run: mlflow run MLProject/ --no-conda -e main
+        run: mlflow run MLProject/ --env-manager=local -e main
 
       - name: Upload mlruns artifacts
         uses: actions/upload-artifact@v4
