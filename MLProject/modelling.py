@@ -40,18 +40,19 @@ def main():
         args.data_path, args.test_size, args.random_state
     )
 
-    with mlflow.start_run(run_name="CI_Run"):
-        model = RandomForestClassifier(
-            n_estimators=args.n_estimators,
-            max_depth=args.max_depth,
-            min_samples_split=args.min_samples_split,
-            min_samples_leaf=args.min_samples_leaf,
-            random_state=args.random_state,
-        )
-        model.fit(X_train, y_train)
+    # mlflow run sets MLFLOW_RUN_ID before calling this script;
+    # autolog will attach to that active run automatically — no start_run() needed.
+    model = RandomForestClassifier(
+        n_estimators=args.n_estimators,
+        max_depth=args.max_depth,
+        min_samples_split=args.min_samples_split,
+        min_samples_leaf=args.min_samples_leaf,
+        random_state=args.random_state,
+    )
+    model.fit(X_train, y_train)
 
-        y_pred = model.predict(X_test)
-        print(classification_report(y_test, y_pred, target_names=["No Disease", "Heart Disease"]))
+    y_pred = model.predict(X_test)
+    print(classification_report(y_test, y_pred, target_names=["No Disease", "Heart Disease"]))
 
 
 if __name__ == "__main__":
